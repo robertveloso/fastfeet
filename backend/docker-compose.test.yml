@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:alpine
+    container_name: fastfeet-postgres-test
+    env_file: .env.test
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - '${DB_PORT}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: fastfeet-redis-test
+    env_file: .env.test
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '${REDIS_PORT}:6379'
+    expose:
+      - 6380
+
+  mongo:
+    image: mongo
+    container_name: fastfeet-mongo-test
+    env_file: .env.test
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MONGODB_USERNAME=${MONGO_USER}
+      - MONGODB_PASSWORD=${MONGO_PASS}
+      - MONGODB_DATABASE=${MONGO_DB}
+    ports:
+      - '${MONGO_PORT}:27017'
+
+volumes:
+  postgres_data:

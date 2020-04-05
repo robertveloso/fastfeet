@@ -1,0 +1,79 @@
+version: '3.6'
+
+networks:
+  fastfeet-network:
+    driver: bridge
+
+services:
+  fastfeet-api:
+    build: .
+    volumes:
+      - .:/home/node/api
+    env_file: .env
+    environment:
+      - DB_HOST=fastfeet-postgres
+      - REDIS_HOST=fastfeet-redis
+      - MONGO_URL=fastfeet-mongo
+    depends_on:
+      - fastfeet-postgres
+      - fastfeet-mongo
+    networks:
+      - fastfeet-network
+    container_name: fastfeet-api
+    command: yarn dev:start
+    ports:
+      - '3333:3333'
+
+  fastfeet-queue:
+    build: .
+    env_file: .env
+    environment:
+      - DB_HOST=fastfeet-postgres
+      - REDIS_HOST=fastfeet-redis
+      - MONGO_URL=fastfeet-mongo
+    depends_on:
+      - fastfeet-redis
+    networks:
+      - fastfeet-network
+    container_name: fastfeet-queue
+    command: yarn dev:queue
+
+  fastfeet-postgres:
+    image: postgres
+    container_name: fastfeet-postgres
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - '${DB_PORT}:5432'
+    networks:
+      - fastfeet-network
+
+  fastfeet-mongo:
+    image: bitnami/mongodb:latest
+    container_name: fastfeet-mongo
+    env_file: .env
+    environment:
+      - ALLOW_EMPTY_PASSWORD=no
+      - MONGODB_USERNAME=${MONGO_USER}
+      - MONGODB_PASSWORD=${MONGO_PASS}
+      - MONGODB_DATABASE=${MONGO_DB}
+    ports:
+      - '${MONGO_PORT}:27017'
+    networks:
+      - fastfeet-network
+
+  fastfeet-redis:
+    image: bitnami/redis:latest
+    container_name: fastfeet-redis
+    env_file: .env
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '${REDIS_PORT}:6379'
+    expose:
+      - 6379
+    networks:
+      - fastfeet-network

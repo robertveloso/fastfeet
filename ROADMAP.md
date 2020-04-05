@@ -1,0 +1,9 @@
+- [x] Testes Jest
+- [x] Adicionar Insomnia
+- [x] Debug
+- [x] Adicionar Husky
+- [x] Deploy Heroku Docker
+- [] GitHub Actions
+- [] Mais funcionalidade de segurança
+- [] Controle de usuários(empresas)
+- [] .github/modelagem.uml
