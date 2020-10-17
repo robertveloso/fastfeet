@@ -1,126 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 
-import { parseISO, format } from 'date-fns';
-
-import Avatar from '~/components/Avatar';
-import Delivery from '~/components/Delivey';
-import NamePhoto from '~/components/NamePhoto';
-import api from '~/services/api';
 import { signOut } from '~/store/modules/auth/actions';
-import colors from '~/styles/colors';
+
+// import Background from '~/components/Background';
+// import DeliveryCard from '~/components/DeliveryCard';
 
 import {
   Container,
-  Profile,
+  Header,
+  Avatar,
+  WelcomeContainer,
   Welcome,
   Name,
-  ActionContainer,
-  TitleContainer,
-  Menu,
-  MenuTitle,
-  Options,
-  Option,
-  List,
+  LogoutContainer,
 } from './styles';
 
-export default function Deliveries() {
-  const [deliveries, setDeliveries] = useState([]);
-  const [typeDeliveries, setTypeDeliveries] = useState('PENDENTES');
+import ListDeliveries from '~/components/ListDeliveries';
 
+function Deliveries({ navigation }) {
   const dispatch = useDispatch();
-  const profile = useSelector(state => state?.user?.profile);
-  const auth = useSelector(state => state.auth);
-
-  function handleLogout() {
+  const profile = useSelector(store => store.deliveryman.profile);
+  const name =
+    profile.name.split(' ').length > 2
+      ? profile.name
+          .split(' ')
+          .splice(0, 2)
+          // eslint-disable-next-line no-return-assign
+          .reduce((total, current) => (total += ` ${current}`))
+      : profile.name;
+  function logout() {
     dispatch(signOut());
   }
 
-  function handlePending() {
-    setTypeDeliveries('PENDENTES');
-  }
-
-  function handleDelivered() {
-    setTypeDeliveries('ENTREGUES');
-  }
-
-  useEffect(() => {
-    async function loadDeliveries() {
-      if (!auth.id) return;
-
-      const response =
-        typeDeliveries === 'PENDENTES'
-          ? await api.get(`/deliveryman/${auth.id}`)
-          : await api.get(`/deliveryman/${auth.id}/deliveries`);
-
-      const data = response.data.map(delivery => ({
-        ...delivery,
-        start_date_formated: delivery.start_date
-          ? format(parseISO(delivery?.start_date), 'dd/MM/yyyy')
-          : '- - / - - / - -',
-        end_date_formated: delivery.end_date
-          ? format(parseISO(delivery?.end_date), 'dd/MM/yyyy')
-          : '- - / - - / - -',
-      }));
-
-      setDeliveries(data);
-    }
-    loadDeliveries();
-  }, [auth.id, typeDeliveries]);
-
   return (
-    <Container>
-      <Profile>
-        <ActionContainer>
-          {profile?.avatar ? (
-            <Avatar source={{ uri: profile?.avatar?.url }} />
-          ) : (
-            <>{profile?.name && <NamePhoto name={profile?.name} />}</>
-          )}
-        </ActionContainer>
+    <>
+      <Container>
+        <Header>
+          <Avatar name={name} size={68} avatar={profile.avatar} />
+          <WelcomeContainer>
+            <Welcome>Bem vindo,</Welcome>
+            <Name>{name}</Name>
+          </WelcomeContainer>
+          <LogoutContainer>
+            <TouchableOpacity onPress={logout}>
+              <Icon name="exit-to-app" size={25} color="#E74040" />
+            </TouchableOpacity>
+          </LogoutContainer>
+        </Header>
 
-        <TitleContainer>
-          <Welcome>Bem vindo de volta,</Welcome>
-          <Name>{profile?.name}</Name>
-        </TitleContainer>
-
-        <ActionContainer>
-          <Icon
-            onPress={handleLogout}
-            name="exit-to-app"
-            color={colors.danger}
-            size={25}
-          />
-        </ActionContainer>
-      </Profile>
-
-      <Menu>
-        <MenuTitle>Entregas</MenuTitle>
-        <Options>
-          <Option
-            style={{
-              marginRight: 15,
-            }}
-            onPress={handlePending}
-            selected={typeDeliveries === 'PENDENTES'}
-          >
-            Pendentes
-          </Option>
-          <Option
-            selected={typeDeliveries === 'ENTREGUES'}
-            onPress={handleDelivered}
-          >
-            Entregues
-          </Option>
-        </Options>
-      </Menu>
-
-      <List
-        data={deliveries}
-        keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => <Delivery data={item} />}
-      />
-    </Container>
+        <ListDeliveries navigation={navigation} />
+      </Container>
+    </>
   );
 }
+
+Deliveries.navigationOptions = {
+  headerShown: false,
+};
+
+Deliveries.propTypes = {
+  navigation: PropTypes.instanceOf(Object).isRequired,
+};
+
+export default Deliveries;

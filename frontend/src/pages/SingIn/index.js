@@ -18,14 +18,14 @@ export default function SingIn() {
 
   return (
     <>
-      <img src={logo} alt="FastFeet" />
+      <img src={logo} alt="Fominha" />
 
       <Form onSubmit={handleSubmit}>
         <SimpleInput
           name="email"
           label="SEU E-MAIL"
           type="email"
-          placeholder="exemplo@fastfeet.com"
+          placeholder="exemplo@acaifood.com.br"
         />
         <SimpleInput
           name="password"

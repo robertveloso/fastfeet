@@ -1,5 +1,7 @@
 /node_modules/**/*
+/node/node_modules/**/*
 */.env
+**/.DS_Store
 
 */tmp/uploads/*
 !/server/tmp/uploads/.gitkeep

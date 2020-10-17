@@ -4,10 +4,11 @@ module.exports = {
   up: queryInterface => {
     return queryInterface.createTable('files', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
+        unique: true,
       },
       name: {
         type: Sequelize.STRING,

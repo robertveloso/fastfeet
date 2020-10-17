@@ -1,5 +1,8 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
+import jwt_decode from 'jwt-decode';
+
+import { signOut as Logout } from '~/store/modules/auth/actions';
 
 import api from '~/services/api';
 import history from '~/services/history';
@@ -21,17 +24,21 @@ export function* singIn({ payload }) {
 
     yield put(signInSuccess(token, user));
 
-    history.push('/deliveries');
+    history.push('/pedidos');
   } catch (err) {
     toast.error('Falha na autenticação, verifique seus dados');
     yield put(signFailure());
   }
 }
 
-export function setToken({ payload }) {
+export function* setToken({ payload }) {
   if (!payload) return;
 
   const { token } = payload.auth;
+
+  if (jwt_decode(token).exp < Date.now() / 1000) {
+    yield put(Logout());
+  }
 
   if (token) {
     api.defaults.headers.Authorization = `Bearer ${token}`;

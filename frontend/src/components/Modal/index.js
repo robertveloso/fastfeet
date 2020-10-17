@@ -1,5 +1,5 @@
 import React from 'react';
-import { MdRemoveRedEye } from 'react-icons/md';
+import { MdPrint } from 'react-icons/md';
 import Popup from 'reactjs-popup';
 
 import PropTypes from 'prop-types';
@@ -9,8 +9,8 @@ export default function Modal({ children }) {
     <Popup
       trigger={
         <button type="button">
-          <MdRemoveRedEye color="#8E5BE8" size={15} />
-          <span>Visualizar</span>
+          <MdPrint color="#8E5BE8" size={15} />
+          <span>Imprimir</span>
         </button>
       }
       modal
@@ -19,6 +19,8 @@ export default function Modal({ children }) {
         width: '450px',
         borderRadius: '4px',
         padding: '25px 25px 0px 25px',
+        overflow: 'auto',
+        height: '402px',
       }}
       overlayStyle={{
         background: 'rgb(0, 0, 0, 0.7)',
@@ -31,5 +33,6 @@ export default function Modal({ children }) {
 }
 
 Modal.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.array.isRequired,
+  // children: PropTypes.element.isRequired,
 };

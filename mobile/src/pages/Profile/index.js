@@ -1,49 +1,61 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { format, parseISO } from 'date-fns';
+import PropTypes from 'prop-types';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 
 import { signOut } from '~/store/modules/auth/actions';
-
 import {
   Container,
+  AvatarContainer,
   Avatar,
-  Content,
-  NamePhoto,
-  Details,
-  Label,
-  Information,
+  Title,
+  SubTitle,
   LogoutButton,
 } from './styles';
 
 export default function Profile() {
+  const profile = useSelector(state => state.deliveryman.profile);
+  const formattedData = format(parseISO(profile.createdAt), 'dd/MM/yyyy');
   const dispatch = useDispatch();
-  const profile = useSelector(state => state?.user?.profile);
 
   function handleLogout() {
     dispatch(signOut());
   }
 
   return (
-    <Container>
-      <Content>
-        {profile?.avatar ? (
-          <Avatar source={{ uri: profile?.avatar?.url }} />
-        ) : (
-          <>{profile?.name && <NamePhoto name={profile?.name} />}</>
-        )}
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="#FFF" />
+      <Container>
+      <AvatarContainer>
+          <Avatar name={profile.name} avatar={profile.avatar} />
+        </AvatarContainer>
 
-        <Details>
-          <Label>Nome Completo</Label>
-          <Information>{profile?.name}</Information>
-          <Label>Email</Label>
-          <Information>{profile?.email}</Information>
-          <Label>Data de cadastro</Label>
-          <Information>{profile?.created_at}</Information>
-        </Details>
+        <Title>Nome Completo</Title>
+        <SubTitle>{profile.name}</SubTitle>
 
-        <LogoutButton onPress={handleLogout} loading={false}>
-          Logout
-        </LogoutButton>
-      </Content>
-    </Container>
+        <Title>Email</Title>
+        <SubTitle>{profile.email}</SubTitle>
+
+        <Title>Data de cadastro</Title>
+        <SubTitle>{formattedData}</SubTitle>
+
+        <LogoutButton onPress={handleLogout}>Logout</LogoutButton>
+      </Container>
+    </>
   );
 }
+
+const TabBarIcon = ({ tintColor }) => (
+  <Icon name="account-circle" size={25} color={tintColor} />
+);
+
+TabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
+Profile.navigationOptions = {
+  tabBarLabel: 'Entregas',
+  tabBarIcon: TabBarIcon,
+};

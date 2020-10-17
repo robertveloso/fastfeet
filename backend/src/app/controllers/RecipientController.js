@@ -1,38 +1,42 @@
-import { Op } from 'sequelize';
+import { Op, fn, col, where } from 'sequelize';
 import Recipient from '../models/Recipient';
 import Delivery from '../models/Delivery';
 
 class RecipientController {
   async store(req, res) {
+    Object.keys(req.body).forEach(function(key, index) {
+      if (this[key] == '') this[key] = null;
+    }, req.body);
+
     const {
       name,
+      phone,
+      mail,
       street,
       number,
+      district,
       complement,
-      state,
-      city,
-      zip_code,
     } = req.body;
 
     const { id } = await Recipient.create({
       name,
+      phone,
+      mail,
       street,
       number,
+      district,
       complement,
-      state,
-      city,
-      zip_code,
     });
 
     return res.json({
       id,
       name,
+      phone,
+      mail,
       street,
       number,
+      district,
       complement,
-      state,
-      city,
-      zip_code,
     });
   }
 
@@ -45,60 +49,95 @@ class RecipientController {
       return res.status(400).json({ error: 'Recipient does not exists' });
     }
 
+    Object.keys(req.body).forEach(function(key, index) {
+      if (this[key] == '') this[key] = null;
+    }, req.body);
+
     const {
       name,
+      phone,
+      mail,
       street,
       number,
+      district,
       complement,
-      state,
-      city,
-      zip_code,
     } = req.body;
 
     await recipient.update({
       name,
+      phone,
+      mail,
       street,
       number,
+      district,
       complement,
-      state,
-      city,
-      zip_code,
     });
 
     return res.json({});
   }
 
   async index(req, res) {
-    const { q: recipientName, page = 1 } = req.query;
+    const { q: query, code, page = 1 } = req.query;
 
-    const response = recipientName
+    const response = code
+      ? await Recipient.findAll({
+          where: { code },
+          order: [['code', 'DESC']],
+          attributes: [
+            'id',
+            'code',
+            'name',
+            'phone',
+            'mail',
+            'street',
+            'number',
+            'district',
+            'complement',
+          ],
+          limit: 5,
+          offset: (page - 1) * 5,
+        })
+      : query
       ? await Recipient.findAll({
           where: {
-            name: {
-              [Op.iLike]: `${recipientName}%`,
-            },
+            [Op.or]: [
+              where(fn('unaccent', col('Recipient.name')), {
+                [Op.iLike]: `%${query}%`,
+              }),
+              {
+                phone: {
+                  [Op.iLike]: `${query}%`,
+                },
+              },
+            ],
           },
+          order: [['code', 'DESC']],
           attributes: [
             'id',
+            'code',
             'name',
+            'phone',
+            'mail',
             'street',
             'number',
+            'district',
             'complement',
-            'state',
-            'city',
-            'zip_code',
           ],
+          limit: 5,
+          offset: (page - 1) * 5,
         })
       : await Recipient.findAll({
+          order: [['code', 'DESC']],
           attributes: [
             'id',
+            'code',
             'name',
+            'phone',
+            'mail',
             'street',
             'number',
+            'district',
             'complement',
-            'state',
-            'city',
-            'zip_code',
           ],
           limit: 5,
           offset: (page - 1) * 5,
@@ -113,13 +152,14 @@ class RecipientController {
     const recipient = await Recipient.findByPk(id, {
       attributes: [
         'id',
+        'code',
         'name',
+        'phone',
+        'mail',
         'street',
         'number',
+        'district',
         'complement',
-        'state',
-        'city',
-        'zip_code',
       ],
     });
 
@@ -142,7 +182,7 @@ class RecipientController {
     const deliveries = await Delivery.findOne({
       where: {
         recipient_id: recipient.id,
-        signature_id: null,
+        status: 'PENDENTE',
       },
     });
 

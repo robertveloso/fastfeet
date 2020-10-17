@@ -9,7 +9,7 @@ export const Container = styled.div`
 	padding-right: 13px;
 
 	display: grid;
-	grid-template-columns: 0.5fr 1.5fr 1fr 1.5fr 1.5fr 1fr 1fr;
+	grid-template-columns: 1fr 1.5fr 1fr 1fr 1.5fr 1fr 1fr;
 
 	> small:last-child {
 		text-align: right;
@@ -54,9 +54,14 @@ export const MoreConainer = styled.div`
 			color: #999;
 		}
 
-		:nth-last-child(-n + 2) {
+		:nth-last-child(-n + 6) {
 			padding-top: 6px;
 			border-top: 1px solid #eee;
+		}
+
+		:nth-last-child(-n + 3) {
+			padding-top: 1px;
+			border-top: none;
 		}
 
 		:nth-last-child(1) {

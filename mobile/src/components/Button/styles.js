@@ -1,19 +1,16 @@
-import { BaseButton } from 'react-native-gesture-handler';
-
 import styled from 'styled-components/native';
+import { RectButton } from 'react-native-gesture-handler';
 
-import Text from '../Text';
-
-export const Container = styled(BaseButton)`
-  height: 46px;
+export const Container = styled(RectButton)`
+  height: 45px;
+  background: #82bf18;
   border-radius: 4px;
-
   align-items: center;
   justify-content: center;
 `;
 
-export const TextButton = styled(Text)`
+export const Text = styled.Text`
   color: #fff;
-  font-weight: bold;
+  font-weight: bold 700;
   font-size: 16px;
 `;

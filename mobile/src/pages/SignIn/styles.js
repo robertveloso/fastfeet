@@ -1,24 +1,37 @@
+import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 
+import Input from '~/components/Input';
 import Button from '~/components/Button';
-import { Input as UnInput } from '~/components/Form';
 
-export const Container = styled.View`
-  background: #7d40e7;
+export const Container = styled.KeyboardAvoidingView.attrs({
+  enabled: Platform.OS === 'ios',
+  behavior: 'padding',
+})`
   flex: 1;
-
   justify-content: center;
   align-items: center;
-
-  padding: 0 25px;
+  padding: 0 30px;
 `;
 
-export const Input = styled(UnInput)`
-  margin-top: 37.5px;
+export const Form = styled.View`
+  align-self: stretch;
+  margin-top: 35px;
+`;
+
+export const ErrorLabel = styled.Text`
+  margin-top: 5px;
+  align-self: stretch;
+  text-align: left;
+  color: #e74040;
+  font-weight: bold;
+  font-size: 15px;
+`;
+
+export const FormInput = styled(Input)`
+  margin-bottom: 10px;
 `;
 
 export const SubmitButton = styled(Button)`
-  background: #82bf18;
-  width: 100%;
-  margin-top: 15.5px;
+  margin-top: 5px;
 `;

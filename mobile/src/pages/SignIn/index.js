@@ -1,45 +1,51 @@
-import React, { useRef } from 'react';
-import { Image, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Form } from '@unform/mobile';
+import logo from '../../../assets/logo.png';
 
-import logo from '~/assets/logo.png';
+import Background from '~/components/Background/BackgroundSignIn';
 import { signInRequest } from '~/store/modules/auth/actions';
-import colors from '~/styles/colors';
 
-import { Container, Input, SubmitButton } from './styles';
+import { Container, Form, FormInput, ErrorLabel, SubmitButton } from './styles';
 
 export default function SignIn() {
-  const dispatch = useDispatch();
-  const loading = useSelector(state => state.auth.loading);
-  const formRef = useRef(null);
+  const [id, setId] = useState('');
+  const [error, setError] = useState(false);
 
-  function handleSubmit({ id }, { reset }) {
-    dispatch(signInRequest(id));
-    reset();
+  const dispatch = useDispatch();
+
+  const loading = useSelector(store => store.auth.loading);
+
+  function handleSubmit() {
+    if (!id) setError(true);
+    else dispatch(signInRequest(id));
   }
 
+  useEffect(() => {
+    setError(false);
+  }, [id]);
+
   return (
-    <Container>
-      <StatusBar backgroundColor={colors.primary} />
-      <Image source={logo} />
-      <Form ref={formRef} onSubmit={handleSubmit}>
-        <Input
-          name="id"
-          keyboardType="number-pad"
-          placeholder="Informe seu ID no cadastro"
-          autoCorrect={false}
-          returnKeyType="send"
-          autoCapitalize="none"
-        />
-        <SubmitButton
-          loading={loading}
-          onPress={() => formRef.current.submitForm()}
-        >
-          Entrar no sistema
-        </SubmitButton>
-      </Form>
-    </Container>
+    <Background>
+      <Container>
+        <Image source={logo} />
+        <Form>
+          <FormInput
+            autoCorrect={false}
+            keyboardType="numeric"
+            placeholder="Informe seu ID de cadastro"
+            returnKeyType="send"
+            onSubmitEditing={handleSubmit}
+            value={id}
+            onChangeText={setId}
+          />
+          {error && <ErrorLabel>Campo obrigatório</ErrorLabel>}
+          <SubmitButton loading={loading} onPress={handleSubmit}>
+            Entrar no sistema
+          </SubmitButton>
+        </Form>
+      </Container>
+    </Background>
   );
 }

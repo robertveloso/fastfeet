@@ -1,10 +1,14 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 
+import Stocks from '~/pages/Stocks';
+import StocksForm from '~/pages/Stocks/Form';
 import Delivery from '~/pages/Delivery';
 import DeliveryForm from '~/pages/Delivery/Form';
 import Deliverers from '~/pages/Deliverers';
 import DeliverersForm from '~/pages/Deliverers/Form';
+import Products from '~/pages/Products';
+import ProductsForm from '~/pages/Products/Form';
 import Problems from '~/pages/Problems';
 import Recipients from '~/pages/Recipients';
 import RecipientsForm from '~/pages/Recipients/Form';
@@ -19,38 +23,46 @@ export default function Routes() {
     <Switch>
       <Route path="/" exact component={SingIn} />
 
-      <Route path="/deliveries" exact component={Delivery} isPrivate />
-      <Route path="/deliveries/form" exact component={DeliveryForm} isPrivate />
+      <Route path="/estoque" exact component={Stocks} isPrivate />
+      <Route path="/estoque/form" exact component={StocksForm} isPrivate />
+      <Route path="/estoque/form/:id" exact component={StocksForm} isPrivate />
+
+      <Route path="/pedidos" exact component={Delivery} isPrivate />
+      <Route path="/pedidos/form" exact component={DeliveryForm} isPrivate />
       <Route
-        path="/deliveries/form/:id"
+        path="/pedidos/form/:id"
         exact
         component={DeliveryForm}
         isPrivate
       />
 
-      <Route path="/deliverers" exact component={Deliverers} isPrivate />
+      <Route path="/entregadores" exact component={Deliverers} isPrivate />
       <Route
-        path="/deliverers/form"
+        path="/entregadores/form"
         exact
         component={DeliverersForm}
         isPrivate
       />
       <Route
-        path="/deliverers/form/:id"
+        path="/entregadores/form/:id"
         exact
         component={DeliverersForm}
         isPrivate
       />
 
-      <Route path="/recipients" exact component={Recipients} isPrivate />
+      <Route path="/produtos" exact component={Products} isPrivate />
+      <Route path="/produtos/form" exact component={ProductsForm} isPrivate />
       <Route
-        path="/recipients/form"
+        path="/produtos/form/:id"
         exact
-        component={RecipientsForm}
+        component={ProductsForm}
         isPrivate
       />
+
+      <Route path="/clientes" exact component={Recipients} isPrivate />
+      <Route path="/clientes/form" exact component={RecipientsForm} isPrivate />
       <Route
-        path="/recipients/form/:id"
+        path="/clientes/form/:id"
         exact
         component={RecipientsForm}
         isPrivate

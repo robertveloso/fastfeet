@@ -9,7 +9,7 @@ import api from '~/services/api';
 import history from '~/services/history';
 
 import RecipientItem from './RecipientItem';
-import { Container, Content, Grid, Button } from './styles';
+import { Container, Content, Grid } from './styles';
 
 export default function Recipients() {
   const [page, setPage] = useState(1);
@@ -29,6 +29,18 @@ export default function Recipients() {
     loadRecipients();
   }, [page]); // eslint-disable-line
 
+  async function handleSearchCode(e) {
+    setPage(1);
+    const response = await api.get('/recipients', {
+      params: {
+        code: e.target.value,
+        page,
+      },
+    });
+
+    setRecipients(response.data);
+  }
+
   async function handleSearchRecipient(e) {
     setPage(1);
 
@@ -46,22 +58,29 @@ export default function Recipients() {
     <Container>
       <Content>
         <HeaderList title="Gerenciando destinatários">
-          <SearchInput
-            onChange={handleSearchRecipient}
-            type="text"
-            placeholder="Buscar por destinatários"
-          />
+          <section>
+            <SearchInput
+              onChange={handleSearchCode}
+              type="text"
+              placeholder="Buscar por código"
+            />
+            <SearchInput
+              onChange={handleSearchRecipient}
+              type="text"
+              placeholder="Buscar por nome/celular"
+            />
+          </section>
           <IconButton
             Icon={MdAdd}
             title="CADASTRAR"
-            action={() => history.push('/recipients/form')}
+            action={() => history.push('/clientes/form')}
             type="button"
           />
         </HeaderList>
         <Grid>
           <section>
             <strong>ID</strong>
-            <strong>Nome</strong>
+            <strong>Celular/Nome</strong>
             <strong>Endereço</strong>
             <strong>Ações</strong>
           </section>

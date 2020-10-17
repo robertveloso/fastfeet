@@ -4,38 +4,53 @@ module.exports = {
   up: queryInterface => {
     return queryInterface.createTable('recipients', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         primaryKey: true,
-        autoIncrement: true,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
+        unique: true,
+      },
+      code: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+        // unique: true,
+        // allowNull: false
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
+      },
+      phone: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique: true,
+      },
+      mail: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        unique: true,
       },
       street: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       number: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
+      },
+      district: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       complement: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-      state: {
-        type: Sequelize.STRING,
+      status: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
-      },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      zip_code: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        defaultValue: true,
       },
       created_at: {
         type: Sequelize.DATE,
@@ -44,10 +59,6 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-      },
-      deleted_at: {
-        type: Sequelize.DATE,
-        allowNull: true,
       },
     });
   },

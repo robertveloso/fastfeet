@@ -19,20 +19,22 @@ export default function Header() {
     <Container>
       <Content>
         <nav>
-          <NavLink to="/deliveries">
+          <NavLink to="/pedidos">
             <img src={logo} alt="FastFeet" />
           </NavLink>
           <Navigation>
-            <NavLink to="/deliveries">ENCOMENDAS</NavLink>
-            <NavLink to="/deliverers">ENTREGADORES</NavLink>
-            <NavLink to="/recipients">DESTINATÁRIOS</NavLink>
-            <NavLink to="/problems">PROBLEMAS</NavLink>
+            <NavLink to="/pedidos">PEDIDOS</NavLink>
+            <NavLink to="/entregadores">ENTREGADORES</NavLink>
+            <NavLink to="/clientes">CLIENTES</NavLink>
+            <NavLink to="/estoque">ESTOQUE</NavLink>
+            <NavLink to="/produtos">PRODUTOS</NavLink>
+            {/* <NavLink to="/problems">PROBLEMAS</NavLink> */}
           </Navigation>
         </nav>
 
         <aside>
           <Profile>
-            <strong>{profile.name}</strong>
+            <strong>{profile?.name}</strong>
             <button type="button" onClick={handleSingOut}>
               sair do sistema
             </button>

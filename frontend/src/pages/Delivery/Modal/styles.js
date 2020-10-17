@@ -1,13 +1,48 @@
 import styled from 'styled-components';
+import ReactToPrint from 'react-to-print';
+import { shade } from 'polished';
+import { colors } from '~/styles/colors';
+
+export const Print = styled(ReactToPrint)``;
+
+export const Button = styled.button`
+  padding: 0 16px;
+  height: 36px;
+  font-weight: bold;
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  background: ${colors.primary} !important;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  margin: 10px auto;
+
+  :hover {
+    background: ${shade(0.2, colors.primary)} !important;
+  }
+`;
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  /*img {
-    height: 325px;
-    margin-top: 25px;
-  }*/
+  p {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+  }
+
+  ul {
+    margin: 2px 0 2px 15px;
+  }
+
+  small {
+    font-size: 12px;
+    color: #666;
+    line-height: 20px;
+  }
 
   > div {
     display: flex;
@@ -23,11 +58,11 @@ export const Container = styled.div`
       margin-bottom: 4px;
     }
 
-    small {
+    /* small {
       font-size: 16px;
       color: #666;
       line-height: 25px;
-    }
+    } */
 
     > div {
       > span {

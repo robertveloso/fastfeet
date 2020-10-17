@@ -8,6 +8,7 @@ import { SaveButton, BackButton } from '~/components/Button';
 import { SimpleInput, PhotoInput } from '~/components/Form';
 import HeaderForm from '~/components/HeaderForm';
 import api from '~/services/api';
+import history from '~/services/history';
 
 import { Container, Content, UnForm } from './styles';
 
@@ -54,6 +55,7 @@ export default function DelivererForm({ match }) {
           avatar_id: responseFile?.data?.id,
         });
         toast.success('Entregador editado com sucesso!');
+        history.push('/entregadores');
       } else {
         await api.post('/deliverers', {
           name: data.name,
@@ -61,6 +63,7 @@ export default function DelivererForm({ match }) {
           avatar_id: responseFile?.data?.id,
         });
         toast.success('Entregador criado com sucesso!');
+        history.push('/entregadores');
       }
 
       reset();
@@ -97,7 +100,7 @@ export default function DelivererForm({ match }) {
             label="Email"
             name="email"
             type="email"
-            placeholder="exemplo@fastfeet.com"
+            placeholder="exemplo@acaifood.com.br"
             onKeyPress={e =>
               e.key === 'Enter' ? formRef.current.submitForm() : null
             }

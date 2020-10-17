@@ -41,7 +41,15 @@ export default function PhotoInput({ name, ...rest }) {
     <Container>
       <Content htmlFor="avatar">
         {preview ? (
-          <img src={preview} alt="Preview" width="150" />
+          <img
+            src={preview}
+            alt="Preview"
+            width="150"
+            style={{
+              width: '-webkit-fill-available',
+              height: '-webkit-fill-available',
+            }}
+          />
         ) : (
           <>
             <MdInsertPhoto size={40} color="#ddd" />

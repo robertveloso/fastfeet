@@ -10,7 +10,7 @@ import Cache from '../../lib/Cache';
 import Queue from '../../lib/Queue';
 
 class CreateDeliveryService {
-  async run({ product, recipient_id, deliverer_id }) {
+  async run({ recipient_id, deliverer_id }) {
     /*
      * Check if recipient exists
      */
@@ -37,12 +37,12 @@ class CreateDeliveryService {
 
     const {
       id,
-      signature_id,
+      // signature_id,
       start_date,
       end_date,
       canceled_at,
     } = await Delivery.create({
-      product,
+      // product_id,
       recipient_id,
       deliverer_id,
       status: 'PENDENTE',
@@ -56,15 +56,15 @@ class CreateDeliveryService {
     await Queue.add(CreationDeliveryMail.key, {
       deliverer,
       recipient: recipientExists,
-      product,
+      // product_id,
     });
 
     return {
       id,
-      product,
+      // product_id,
       recipient_id,
       deliverer_id,
-      signature_id,
+      // signature_id,
       start_date,
       end_date,
       canceled_at,

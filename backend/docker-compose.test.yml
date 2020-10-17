@@ -3,7 +3,7 @@ version: '3'
 services:
   postgres:
     image: postgres:alpine
-    container_name: fastfeet-postgres-test
+    container_name: fominha-postgres-test
     env_file: .env.test
     environment:
       - POSTGRES_USER=${DB_USER}
@@ -16,7 +16,7 @@ services:
 
   redis:
     image: redis:alpine
-    container_name: fastfeet-redis-test
+    container_name: fominha-redis-test
     env_file: .env.test
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
@@ -27,7 +27,7 @@ services:
 
   mongo:
     image: mongo
-    container_name: fastfeet-mongo-test
+    container_name: fominha-mongo-test
     env_file: .env.test
     environment:
       - ALLOW_EMPTY_PASSWORD=no

@@ -1,5 +1,6 @@
+// primary: '#7D40E7',
 export const colors = {
-  primary: '#7D40E7',
+  primary: '#fa3d47',
   danger: '#DE3B3B',
   info: '#4D85EE',
 };

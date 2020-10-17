@@ -9,7 +9,7 @@ import api from '~/services/api';
 import history from '~/services/history';
 
 import DelivererItem from './DelivererItem';
-import { Container, Content, Grid, Button } from './styles';
+import { Container, Content, Grid } from './styles';
 
 export default function Deliverers() {
   const [deliverers, setDeliverers] = useState([]);
@@ -29,6 +29,18 @@ export default function Deliverers() {
     loadDeliverers();
   }, [page]); //eslint-disable-line
 
+  async function handleSearchCode(e) {
+    setPage(1);
+    const response = await api.get('/deliverers', {
+      params: {
+        code: e.target.value,
+        page,
+      },
+    });
+
+    setDeliverers(response.data);
+  }
+
   async function handleSearchDeliverer(e) {
     setPage(1);
 
@@ -46,15 +58,22 @@ export default function Deliverers() {
     <Container>
       <Content>
         <HeaderList title="Gerenciando entregadores">
-          <SearchInput
-            onChange={handleSearchDeliverer}
-            type="text"
-            placeholder="Buscar por entregadores"
-          />
+          <section>
+            <SearchInput
+              onChange={handleSearchCode}
+              type="text"
+              placeholder="Buscar por código"
+            />
+            <SearchInput
+              onChange={handleSearchDeliverer}
+              type="text"
+              placeholder="Buscar por nome"
+            />
+          </section>
           <IconButton
             Icon={MdAdd}
             title="CADASTRAR"
-            action={() => history.push('/deliverers/form')}
+            action={() => history.push('/entregadores/form')}
             type="button"
           />
         </HeaderList>

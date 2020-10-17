@@ -8,6 +8,7 @@ import redisConfig from './config/redis';
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
+import ProductController from './app/controllers/ProductController';
 import DelivererController from './app/controllers/DelivererController';
 import FileController from './app/controllers/FileController';
 import DeliveryController from './app/controllers/DeliveryController';
@@ -17,14 +18,19 @@ import DeliveryWithDrawController from './app/controllers/DeliveryWithDrawContro
 import DeliveryFinishController from './app/controllers/DeliveryFinishController';
 import DeliveryProblemController from './app/controllers/DeliveryProblemController';
 
+import StockController from './app/controllers/StockController';
+import validateStockStoreOrUpdate from './app/validators/StockStoreOrUpdate';
+
 import validateUserStore from './app/validators/UserStore';
 import validateUserUpdate from './app/validators/UserUpdate';
 import validateSessionStore from './app/validators/SessionStore';
 import validateRecipientStoreOrUpdate from './app/validators/RecipientStoreOrUpdate';
+import validateProductStoreOrUpdate from './app/validators/ProductStoreOrUpdate';
 import validateDelivererStoreOrUpdate from './app/validators/DelivererStoreOrUpdate';
 import validateDeliveryWithDraw from './app/validators/DeliveryWithDraw';
 import validateDeliveryStoreOrUpdate from './app/validators/DeliveryStoreOrUpdate';
 import validateDeliveryProblemStore from './app/validators/DeliveryProblemStore';
+import validateDeliveryStatusUpdate from './app/validators/DeliveryStatusUpdate';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -87,6 +93,23 @@ routes.get('/recipients', RecipientController.index);
 routes.get('/recipients/:id', RecipientController.show);
 routes.delete('/recipients/:id', RecipientController.destroy);
 
+// Produtos
+routes.post('/products', validateProductStoreOrUpdate, ProductController.store);
+routes.get('/products', ProductController.index);
+routes.get('/products/:id', ProductController.show);
+routes.put(
+  '/products/:id',
+  // validateProductStoreOrUpdate,
+  ProductController.update
+);
+routes.delete('/products/:id', ProductController.destroy);
+// Estoque
+routes.post('/stock', validateStockStoreOrUpdate, StockController.store);
+routes.get('/stock', StockController.index);
+routes.get('/stock/:id', StockController.show);
+routes.put('/stock/:id', validateStockStoreOrUpdate, StockController.update);
+routes.delete('/stock/:id', StockController.destroy);
+
 routes.post(
   '/deliverers',
   validateDelivererStoreOrUpdate,
@@ -110,6 +133,11 @@ routes.post(
 );
 routes.get('/deliveries', DeliveryController.index);
 routes.get('/deliveries/:id', DeliveryController.show);
+routes.put(
+  '/deliveries/status/:id',
+  validateDeliveryStatusUpdate,
+  DeliveryController.update
+);
 routes.put(
   '/deliveries/:id',
   validateDeliveryStoreOrUpdate,

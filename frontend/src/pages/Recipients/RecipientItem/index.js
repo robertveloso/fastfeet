@@ -16,33 +16,33 @@ export default function RecipientItem({ data, updateRecipients }) {
     const confirm = window.confirm('Você tem certeza que deseja deletar isso?');
 
     if (!confirm) {
-      toast.error('Destinatário não apagado!');
+      toast.error('Cliente não apagado!');
       return;
     }
 
     try {
       await api.delete(`/recipients/${data.id}`);
       updateRecipients();
-      toast.success('Destinatário apagado com sucesso!');
+      toast.success('Cliente apagado com sucesso!');
     } catch (err) {
       toast.error(
-        'Esse destinatário não pode ser apagado, pois ainda tem encomenda para receber!'
+        'Esse cliente não pode ser apagado, pois ainda tem entrega pendente!'
       );
     }
   }
 
   return (
     <Container>
-      <small>#{data.id}</small>
-      <small>{data.name}</small>
+      <small>#{data.code}</small>
+      <small>{data.name ? `${data.phone} - ${data.name}` : data.phone}</small>
       <small>
-        {data.street}, {data.number}, {data.city} - {data.state}
+        {data.street}, {data.number} - {data.district}
       </small>
       <More>
         <MoreConainer>
           <div>
             <button
-              onClick={() => history.push(`/recipients/form/${data.id}`)}
+              onClick={() => history.push(`/clientes/form/${data.id}`)}
               type="button"
             >
               <MdEdit color={colors.info} size={15} />
@@ -63,12 +63,11 @@ export default function RecipientItem({ data, updateRecipients }) {
 
 RecipientItem.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    street: PropTypes.string.isRequired,
-    number: PropTypes.number.isRequired,
-    city: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    phone: PropTypes.string.isRequired,
+    street: PropTypes.string,
+    number: PropTypes.number,
   }).isRequired,
   updateRecipients: PropTypes.func.isRequired,
 };

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 
 import { SaveButton, BackButton } from '~/components/Button';
-import { SimpleInput, MaskInput } from '~/components/Form';
+import { SimpleInput, MaskInput, TextAreaInput } from '~/components/Form';
 import HeaderForm from '~/components/HeaderForm';
 import api from '~/services/api';
 import history from '~/services/history';
@@ -32,42 +32,48 @@ export default function RecipientForm({ match }) {
 
     try {
       const schema = Yup.object().shape({
-        name: Yup.string().required('O nome é obrigatório'),
-        street: Yup.string().required('A rua é obrigatória'),
-        number: Yup.string().required('O número é obrigatório'),
+        name: Yup.string().notRequired(),
+        phone: Yup.string().required('Celular é obrigatório'),
+        mail: Yup.string()
+          .email()
+          .notRequired(),
+        street: Yup.string().notRequired(),
+        number: Yup.string().notRequired(),
+        district: Yup.string().notRequired(),
         complement: Yup.string().notRequired(),
-        city: Yup.string().required('A cidade é obrigatória'),
-        state: Yup.string().required('O estado é obrigatório'),
-        zip_code: Yup.string().required('O CEP é obrigatório'),
       });
 
       await schema.validate(data, {
         abortEarly: false,
       });
 
+      console.log(data);
+      const phone = data.phone.replace(/[\s()-]+/gi, '');
+
       if (id) {
         await api.put(`/recipients/${id}`, {
-          name: data.name,
-          street: data.street,
-          number: data.number,
+          name: data?.name,
+          phone: phone,
+          mail: data?.mail,
+          street: data?.street,
+          number: data?.number,
+          district: data?.district,
           complement: data?.complement,
-          city: data.city,
-          state: data.state,
-          zip_code: data.zip_code,
         });
-        toast.success('Destinatário editado com sucesso!');
-        history.push('/recipients');
+        toast.success('Cliente editado com sucesso!');
+        history.push('/clientes');
       } else {
         await api.post('/recipients', {
-          name: data.name,
-          street: data.street,
-          number: data.number,
+          name: data?.name,
+          phone: phone,
+          mail: data?.mail,
+          street: data?.street,
+          number: data?.number,
+          district: data?.district,
           complement: data?.complement,
-          city: data.city,
-          state: data.state,
-          zip_code: data.zip_code,
         });
-        toast.success('Destinatário criado com sucesso!');
+        toast.success('Cliente criado com sucesso!');
+        history.push('/clientes');
       }
 
       reset();
@@ -87,24 +93,40 @@ export default function RecipientForm({ match }) {
   return (
     <Container>
       <Content>
-        <HeaderForm title="Cadastro de destinatário">
+        <HeaderForm title="Cadastro de cliente">
           <BackButton />
           <SaveButton action={() => formRef.current.submitForm()} />
         </HeaderForm>
 
         <UnForm ref={formRef} onSubmit={handleSubmit}>
-          <SimpleInput
-            label="Nome"
-            name="name"
-            type="text"
-            placeholder="Nome do destinatário"
-          />
+          <div>
+            <SimpleInput
+              label="Nome"
+              name="name"
+              type="text"
+              placeholder="Nome do cliente"
+            />
+            <MaskInput
+              label="Celular"
+              name="phone"
+              type="text"
+              mask="(99) 9 9999-9999"
+              maskPlaceholder={null}
+              placeholder="(__) _ ____-____"
+            />
+            <SimpleInput
+              label="Email"
+              name="mail"
+              type="email"
+              placeholder="E-mail do cliente"
+            />
+          </div>
           <div>
             <SimpleInput
               label="Rua"
               name="street"
               type="text"
-              placeholder="Rua do destinatário"
+              placeholder="Rua do cliente"
             />
             <SimpleInput
               label="Número"
@@ -112,31 +134,18 @@ export default function RecipientForm({ match }) {
               type="number"
               placeholder="Número da casa"
             />
-            <SimpleInput label="Complemento" name="complement" type="text" />
-          </div>
-          <div>
             <SimpleInput
-              label="Cidade"
-              name="city"
+              label="Bairro"
+              name="district"
               type="text"
-              placeholder="Cidade do destinatário"
-            />
-            <SimpleInput
-              label="Estado"
-              name="state"
-              type="text"
-              placeholder="Estado do destinatário"
-            />
-            <MaskInput
-              label="CEP"
-              name="zip_code"
-              mask="99999-999"
-              maskPlaceholder={null}
-              placeholder="_____-___"
+              placeholder="Bairro do cliente"
               onKeyPress={e =>
                 e.key === 'Enter' ? formRef.current.submitForm() : null
               }
             />
+          </div>
+          <div>
+            <TextAreaInput label="Complemento" name="complement" type="text" />
           </div>
         </UnForm>
       </Content>

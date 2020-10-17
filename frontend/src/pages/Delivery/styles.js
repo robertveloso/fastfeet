@@ -26,7 +26,7 @@ export const Grid = styled.div`
     padding-left: 25px;
     padding-right: 13px;
 
-    grid-template-columns: 0.5fr 1.5fr 1fr 1.5fr 1.5fr 1fr 1fr;
+    grid-template-columns: 1fr 1.5fr 1fr 1fr 1.5fr 1fr 1fr;
 
     strong:last-child {
       text-align: right;
