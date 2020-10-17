@@ -12,7 +12,7 @@
 </p>
 
 <p align="center">
-  <a href="https://insomnia.rest/run/?label=Fastfeet&uri=https%3A%2F%2Fraw.githubusercontent.com%robertveloso%2Ffastfeet%2Fmaster%2F.github%2Finsmonia.json" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
+  <a href="https://insomnia.rest/run/?label=Fastfeet&uri=https%3A%2F%2Fraw.githubusercontent.com%2Frobertveloso%2Ffastfeet%2Fmaster%2F.github%2Finsomnia.json" target="_blank"><img src="https://insomnia.rest/images/run.svg" alt="Run in Insomnia"></a>
 </p>
 
 <strong>Links dos desafios:</strong>
