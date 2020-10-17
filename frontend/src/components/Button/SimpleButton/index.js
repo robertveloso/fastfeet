@@ -10,4 +10,5 @@ export default styled.button`
   font-weight: bold;
   height: 45px;
   border-radius: 4px;
+  border: none;
 `;

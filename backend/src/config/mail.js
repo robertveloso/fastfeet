@@ -7,7 +7,7 @@ export default {
     pass: process.env.MAIL_PASS,
   },
   default: {
-    from: 'Equipe FastFeet <noreply@fastfeet.com>',
+    from: 'Equipe AçaíFood <noreply@acaifood.com.br>',
   },
 };
 

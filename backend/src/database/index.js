@@ -7,15 +7,32 @@ import mongoConfig from '../config/mongo';
 import User from '../app/models/User';
 import Recipient from '../app/models/Recipient';
 import File from '../app/models/File';
+import Product from '../app/models/Product';
+import Stock from '../app/models/Stock';
 import Deliverer from '../app/models/Deliverer';
 import Delivery from '../app/models/Delivery';
 
-const models = [User, Recipient, File, Deliverer, Delivery];
+import StockProducts from '../app/models/StockProducts';
+import DeliveryProducts from '../app/models/DeliveryProducts';
+import DeliveryStock from '../app/models/DeliveryStock';
+
+const models = [
+  User,
+  Recipient,
+  File,
+  Product,
+  Stock,
+  Deliverer,
+  Delivery,
+  StockProducts,
+  DeliveryProducts,
+  DeliveryStock,
+];
 
 class Database {
   constructor() {
     this.init();
-    this.mongo();
+    // this.mongo();
   }
 
   init() {

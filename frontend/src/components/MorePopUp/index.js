@@ -27,5 +27,5 @@ export default function MorePopUp({ children, ...rest }) {
 }
 
 MorePopUp.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.object.isRequired,
 };

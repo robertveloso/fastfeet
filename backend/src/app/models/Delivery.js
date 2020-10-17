@@ -4,7 +4,20 @@ class Delivery extends Model {
   static init(sequelize) {
     super.init(
       {
-        product: Sequelize.STRING,
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          allowNull: false,
+          unique: true,
+          primaryKey: true,
+        },
+        payment_method: Sequelize.INTEGER,
+        fare: Sequelize.BIGINT,
+        discount: Sequelize.BIGINT,
+        received: Sequelize.BIGINT,
+        change: Sequelize.BIGINT,
+        total: Sequelize.BIGINT,
+
         canceled_at: Sequelize.DATE,
         start_date: Sequelize.DATE,
         end_date: Sequelize.DATE,
@@ -19,6 +32,16 @@ class Delivery extends Model {
   }
 
   static associate(models) {
+    this.hasMany(models.DeliveryProducts, {
+      as: 'deliveriesProducts',
+      sourceKey: 'id',
+      foreignKey: 'delivery_id',
+    });
+    this.hasMany(models.DeliveryStock, {
+      as: 'deliveriesStock',
+      sourceKey: 'id',
+      foreignKey: 'delivery_id',
+    });
     this.belongsTo(models.Recipient, {
       foreignKey: 'recipient_id',
       as: 'recipient',
@@ -26,10 +49,6 @@ class Delivery extends Model {
     this.belongsTo(models.Deliverer, {
       foreignKey: 'deliverer_id',
       as: 'deliverer',
-    });
-    this.belongsTo(models.File, {
-      foreignKey: 'signature_id',
-      as: 'signature',
     });
   }
 }

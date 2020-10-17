@@ -16,7 +16,8 @@ export default function HeaderList({ title, children }) {
 
 HeaderList.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.array,
+  // children: PropTypes.arrayOf(PropTypes.element),
 };
 
 HeaderList.defaultProps = {

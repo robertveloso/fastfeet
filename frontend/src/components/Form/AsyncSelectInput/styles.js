@@ -20,5 +20,4 @@ export const Container = styled.div`
 
 export const Error = styled.span`
   color: ${colors.danger};
-  margin-top: 8px;
 `;

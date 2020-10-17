@@ -8,6 +8,13 @@ export const Container = styled.div`
 
     margin-bottom: 35px;
   }
+  div {
+    > section {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  }
 `;
 
 export const Content = styled.div`

@@ -11,7 +11,7 @@ import api from '~/services/api';
 import history from '~/services/history';
 
 import DeliveryItem from './DeliveryItem';
-import { Container, Content, Grid, Button } from './styles';
+import { Container, Content, Grid } from './styles';
 
 export default function Delivery() {
   const [deliveries, setDeliveries] = useState([]);
@@ -27,6 +27,20 @@ export default function Delivery() {
         ? format(parseISO(delivery.end_date), 'dd/MM/yyyy')
         : null,
     }));
+  }
+
+  async function handleSearchCode(e) {
+    setPage(1);
+    const response = await api.get('/deliveries', {
+      params: {
+        code: e.target.value,
+        page,
+      },
+    });
+
+    const data = formatDates(response.data);
+
+    setDeliveries(data);
   }
 
   async function handleSearchDelivery(e) {
@@ -62,16 +76,23 @@ export default function Delivery() {
   return (
     <Container>
       <Content>
-        <HeaderList title="Gerenciando encomendas">
-          <SearchInput
-            onChange={handleSearchDelivery}
-            type="text"
-            placeholder="Buscar por encomendas"
-          />
+        <HeaderList title="Gerenciando pedidos">
+          <section>
+            <SearchInput
+              onChange={handleSearchCode}
+              type="text"
+              placeholder="Buscar por código"
+            />
+            <SearchInput
+              onChange={handleSearchDelivery}
+              type="text"
+              placeholder="Buscar por nome/celular"
+            />
+          </section>
           <IconButton
             Icon={MdAdd}
             title="CADASTRAR"
-            action={() => history.push('/deliveries/form')}
+            action={() => history.push('/pedidos/form')}
             type="button"
           />
         </HeaderList>
@@ -79,10 +100,10 @@ export default function Delivery() {
         <Grid>
           <section>
             <strong>ID</strong>
-            <strong>Destinatário</strong>
-            <strong>Produto</strong>
-            <strong>Cidade</strong>
-            <strong>Estado</strong>
+            <strong>Cliente</strong>
+            <strong>Entregador</strong>
+            <strong>Valor</strong>
+            <strong>Endereço</strong>
             <strong>Status</strong>
             <strong>Ações</strong>
           </section>

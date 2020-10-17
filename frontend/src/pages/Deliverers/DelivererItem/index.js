@@ -32,7 +32,7 @@ export default function DelivererItem({ data, updateDeliverers }) {
 
   return (
     <Container>
-      <small>#{data.id}</small>
+      <small>#{data.code}</small>
       {data.avatar ? (
         <img src={data?.avatar?.url} alt="AvatarUrl" />
       ) : (
@@ -44,7 +44,7 @@ export default function DelivererItem({ data, updateDeliverers }) {
         <MoreConainer>
           <div>
             <button
-              onClick={() => history.push(`/deliverers/form/${data.id}`)}
+              onClick={() => history.push(`/entregadores/form/${data.id}`)}
               type="button"
             >
               <MdEdit color={colors.info} size={15} />
@@ -65,7 +65,7 @@ export default function DelivererItem({ data, updateDeliverers }) {
 
 DelivererItem.propTypes = {
   data: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     avatar: PropTypes.shape({

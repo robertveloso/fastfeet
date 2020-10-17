@@ -1,46 +1,46 @@
 version: '3.6'
 
 networks:
-  fastfeet-network:
+  fominha-network:
     driver: bridge
 
 services:
-  fastfeet-api:
+  fominha-api:
     build: .
     volumes:
       - .:/home/node/api
     env_file: .env
     environment:
-      - DB_HOST=fastfeet-postgres
-      - REDIS_HOST=fastfeet-redis
-      - MONGO_URL=fastfeet-mongo
+      - DB_HOST=fominha-postgres
+      - REDIS_HOST=fominha-redis
+      # - MONGO_URL=fominha-mongo
     depends_on:
-      - fastfeet-postgres
-      - fastfeet-mongo
+      - fominha-postgres
+      # - fominha-mongo
     networks:
-      - fastfeet-network
-    container_name: fastfeet-api
+      - fominha-network
+    container_name: fominha-api
     command: yarn dev:start
     ports:
       - '3333:3333'
 
-  fastfeet-queue:
+  fominha-queue:
     build: .
     env_file: .env
     environment:
-      - DB_HOST=fastfeet-postgres
-      - REDIS_HOST=fastfeet-redis
-      - MONGO_URL=fastfeet-mongo
+      - DB_HOST=fominha-postgres
+      - REDIS_HOST=fominha-redis
+      # - MONGO_URL=fominha-mongo
     depends_on:
-      - fastfeet-redis
+      - fominha-redis
     networks:
-      - fastfeet-network
-    container_name: fastfeet-queue
+      - fominha-network
+    container_name: fominha-queue
     command: yarn dev:queue
 
-  fastfeet-postgres:
+  fominha-postgres:
     image: postgres
-    container_name: fastfeet-postgres
+    container_name: fominha-postgres
     env_file: .env
     environment:
       - POSTGRES_USER=${DB_USER}
@@ -49,25 +49,25 @@ services:
     ports:
       - '${DB_PORT}:5432'
     networks:
-      - fastfeet-network
+      - fominha-network
 
-  fastfeet-mongo:
-    image: bitnami/mongodb:latest
-    container_name: fastfeet-mongo
-    env_file: .env
-    environment:
-      - ALLOW_EMPTY_PASSWORD=no
-      - MONGODB_USERNAME=${MONGO_USER}
-      - MONGODB_PASSWORD=${MONGO_PASS}
-      - MONGODB_DATABASE=${MONGO_DB}
-    ports:
-      - '${MONGO_PORT}:27017'
-    networks:
-      - fastfeet-network
+  # fominha-mongo:
+  #   image: bitnami/mongodb:latest
+  #   container_name: fominha-mongo
+  #   env_file: .env
+  #   environment:
+  #     - ALLOW_EMPTY_PASSWORD=no
+  #     - MONGODB_USERNAME=${MONGO_USER}
+  #     - MONGODB_PASSWORD=${MONGO_PASS}
+  #     - MONGODB_DATABASE=${MONGO_DB}
+  #   ports:
+  #     - '${MONGO_PORT}:27017'
+  #   networks:
+  #     - fominha-network
 
-  fastfeet-redis:
+  fominha-redis:
     image: bitnami/redis:latest
-    container_name: fastfeet-redis
+    container_name: fominha-redis
     env_file: .env
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
@@ -76,4 +76,4 @@ services:
     expose:
       - 6379
     networks:
-      - fastfeet-network
+      - fominha-network

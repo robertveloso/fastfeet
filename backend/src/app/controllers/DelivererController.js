@@ -1,4 +1,4 @@
-import { Op } from 'sequelize';
+import { Op, fn, col, where } from 'sequelize';
 
 import Deliverer from '../models/Deliverer';
 import Delivery from '../models/Delivery';
@@ -23,7 +23,7 @@ class DelivererController {
     const { id } = req.params;
 
     const deliverer = await Deliverer.findByPk(id, {
-      attributes: ['id', 'name', 'email', 'created_at'],
+      attributes: ['id', 'code', 'name', 'email', 'created_at'],
       include: [
         {
           model: File,
@@ -41,17 +41,36 @@ class DelivererController {
   }
 
   async index(req, res) {
-    const { q: delivererName, page = 1 } = req.query;
+    const { q: query, code, page = 1 } = req.query;
 
-    const response = delivererName
+    const response = code
+      ? await Deliverer.findAll({
+          where: { code },
+          order: [['code', 'DESC']],
+          attributes: ['id', 'code', 'name', 'email'],
+          limit: 5,
+          offset: (page - 1) * 5,
+          include: [
+            {
+              model: File,
+              as: 'avatar',
+              attributes: ['id', 'path', 'url'],
+            },
+          ],
+        })
+      : query
       ? await Deliverer.findAll({
           where: {
-            name: {
-              [Op.iLike]: `${delivererName}%`,
-            },
+            [Op.or]: [
+              where(fn('unaccent', col('Deliverer.name')), {
+                [Op.iLike]: `%${query}%`,
+              }),
+            ],
           },
-          order: ['id'],
-          attributes: ['id', 'name', 'email'],
+          order: [['code', 'DESC']],
+          attributes: ['id', 'code', 'name', 'email'],
+          limit: 5,
+          offset: (page - 1) * 5,
           include: [
             {
               model: File,
@@ -61,8 +80,8 @@ class DelivererController {
           ],
         })
       : await Deliverer.findAll({
-          attributes: ['id', 'name', 'email'],
-          order: ['id'],
+          order: [['code', 'DESC']],
+          attributes: ['id', 'code', 'name', 'email'],
           limit: 5,
           offset: (page - 1) * 5,
           include: [

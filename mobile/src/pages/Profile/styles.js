@@ -1,60 +1,45 @@
 import styled from 'styled-components/native';
-
-import AvatarComponent from '~/components/Avatar';
+import LetterAvatar from '~/components/Avatar';
 import Button from '~/components/Button';
-import NamePhotoComponent from '~/components/NamePhoto';
-import Text from '~/components/Text';
-import colors from '~/styles/colors';
 
-export const Container = styled.SafeAreaView`
+export const Container = styled.View`
   flex: 1;
-  background: #fff;
-
-  justify-content: center;
-`;
-
-export const Content = styled.View`
+  background-color: #fff;
+  flex-direction: column;
+  padding: 50px 35px;
   align-items: center;
-
-  padding: 0 36px;
 `;
 
-export const Avatar = styled(AvatarComponent)`
-  height: 137px;
-  width: 137px;
-  border-radius: 68.5px;
+export const AvatarContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 25px;
 `;
 
-export const NamePhoto = styled(NamePhotoComponent)`
-  height: 137px;
-  width: 137px;
-  border-radius: 68.5px;
-`;
+export const Avatar = styled(LetterAvatar).attrs({
+  size: 136,
+})``;
 
-export const Details = styled.View`
-  width: 100%;
-
-  padding-top: 40px;
-`;
-
-export const Label = styled(Text)`
+export const Title = styled.Text`
+  color: #666666;
   font-size: 12px;
-  color: #666;
+  align-self: stretch;
+  text-align: left;
+  margin-top: 15px;
 `;
 
-export const Information = styled(Text)`
+export const SubTitle = styled.Text`
+  align-self: stretch;
+  text-align: left;
+  color: #444444;
   font-size: 22px;
   font-weight: bold;
-  color: #444;
-
-  margin-bottom: 15px;
 `;
 
-export const LogoutButton = styled(Button)`
-  background: ${colors.danger};
-
-  height: 40px;
-
-  margin-top: 15px;
-  width: 100%;
+export const LogoutButton = styled(Button).attrs({
+  color: '#E74040',
+})`
+  align-self: stretch;
+  margin-top: 30px;
 `;

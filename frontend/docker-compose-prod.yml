@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  frontend-prod:
+    container_name: fominha-prod
+    build:
+      context: .
+      dockerfile: Dockerfile-prod
+    ports:
+      - '80:80'
